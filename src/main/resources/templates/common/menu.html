@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>菜单页</title>
+</head>
+<body>
+<ul style="padding-left:0px;" class="list-group" id="sidebar" th:each="permission:${session.rootPermission.children}">
+
+	<li class="list-group-item tree-closed" th:if="${#lists.isEmpty(permission.children)}">
+		<a th:href="@{${permission.url}}">
+		<i th:class="${permission.icon}"></i><span th:text="${permission.name}"></span> </a> 
+	</li>        
+	
+	<li class="list-group-item tree-closed" th:if="not ${#lists.isEmpty(permission.children)}">
+		<span><span th:text="${permission.name}"></span><i th:class="${permission.icon}"></i>  <span class="badge" style="float:right" th:text="${permission.children.size()}"></span></span> 
+		<ul style="margin-top:10px;display:none;">
+			<li style="height:30px;" th:each="child:${permission.children}">
+				<a th:href="@{${child.url}}" ><i th:class="${child.icon}"></i><span th:text="${child.name}"></span> </a> 
+			</li>		
+		</ul>
+	</li>		
+
+</ul>
+
+<div class="navbar-collapse collapse" id="topbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li style="padding-top:8px;">
+				<div class="btn-group">
+				  <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
+					<i class="glyphicon glyphicon-role"></i> 
+					<span th:text="${session.loginUser.username}"></span><span class="caret"></span>
+				  </button>
+					  <ul class="dropdown-menu" role="menu">
+						<li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
+						<li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
+						<li class="divider"></li>
+						<li><a href="/logout"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
+					  </ul>
+			    </div>
+			</li>
+            <li style="margin-left:10px;padding-top:8px;">
+				<button type="button" class="btn btn-default btn-danger">
+				  <span class="glyphicon glyphicon-question-sign"></span> 帮助
+				</button>
+			</li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+</div>
+        
+</body>
+</html>
